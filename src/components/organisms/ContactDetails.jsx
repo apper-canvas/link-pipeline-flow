@@ -280,14 +280,15 @@ ${deals.reduce((sum, deal) => sum + deal.value_c, 0).toLocaleString()}
                         </Badge>
                         <span className="text-sm text-secondary-500">
                           {formatDistanceToNow(new Date(activity.timestamp_c), { addSuffix: true })}
-<span className="text-sm text-secondary-500">
-                          {formatDistanceToNow(new Date(activity.timestamp_c), { addSuffix: true })}
                         </span>
                       </div>
                       <p className="text-secondary-700 text-sm">
                         {activity.description_c}
-                      </p>
+</p>
                     </div>
+                  </div>
+                ))}
+              </div>
             ) : (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
