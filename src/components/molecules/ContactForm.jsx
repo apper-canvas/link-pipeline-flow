@@ -26,17 +26,17 @@ name_c: contact?.name_c || "",
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.name.trim()) {
+if (!formData.name_c.trim()) {
       newErrors.name = "Name is required";
     }
     
-    if (!formData.email.trim()) {
+if (!formData.email_c.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
     
-    if (!formData.company.trim()) {
+if (!formData.company_c.trim()) {
       newErrors.company = "Company is required";
     }
     
@@ -59,7 +59,6 @@ name_c: contact?.name_c || "",
             Name *
           </label>
           <Input
-            name="name"
 name="name_c"
             value={formData.name_c}
             onChange={handleChange}
@@ -75,7 +74,6 @@ name="name_c"
             Email *
           </label>
           <Input
-            name="email"
 name="email_c"
             type="email"
             value={formData.email_c}
@@ -122,7 +120,6 @@ name="company_c"
           Notes
         </label>
         <textarea
-          name="notes"
 name="notes_c"
           value={formData.notes_c}
           onChange={handleChange}
