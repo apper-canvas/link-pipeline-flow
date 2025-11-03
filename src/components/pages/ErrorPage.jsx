@@ -1,10 +1,11 @@
-import React from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import React from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import Login from "@/components/pages/Login";
+import Error from "@/components/ui/Error";
 
 const ErrorPage = () => {
   const [searchParams] = useSearchParams();
   const errorMessage = searchParams.get('message') || 'An error occurred';
-  
   return (
     <div className="min-h-screen flex items-center justify-center bg-secondary-50">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg text-center">

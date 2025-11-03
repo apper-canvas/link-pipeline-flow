@@ -1,8 +1,13 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
-import Header from "@/components/organisms/Header";
+import { Outlet, useOutletContext } from "react-router-dom";
+import Header from "./Header";
 
 const Layout = () => {
+  // App-level state and methods to pass via outlet context
+  const outletContext = {
+    // Add any app-level state or methods that need to be shared
+    // with child components here
+  };
   return (
     <div className="min-h-screen bg-secondary-50">
       <Header />
