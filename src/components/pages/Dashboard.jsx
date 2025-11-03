@@ -73,9 +73,9 @@ const Dashboard = () => {
     .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
     .slice(0, 8);
 
-  const getContactName = (contactId) => {
+const getContactName = (contactId) => {
     const contact = contacts.find(c => c.Id === contactId);
-    return contact?.name || "Unknown Contact";
+    return contact?.name_c || "Unknown Contact";
   };
 
   const getActivityIcon = (type) => {
@@ -116,8 +116,8 @@ const Dashboard = () => {
           value={contacts.length}
           icon="Users"
           iconColor="text-primary-600"
-          change={`${contacts.filter(c => {
-            const daysSinceCreated = Math.floor((new Date() - new Date(c.createdAt)) / (1000 * 60 * 60 * 24));
+change={`${contacts.filter(c => {
+            const daysSinceCreated = Math.floor((new Date() - new Date(c.CreatedOn)) / (1000 * 60 * 60 * 24));
             return daysSinceCreated <= 7;
           }).length} added this week`}
           changeType="neutral"
@@ -174,16 +174,16 @@ const Dashboard = () => {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-1">
+<div className="flex items-center space-x-2 mb-1">
                           <span className="font-medium text-secondary-900">
-                            {getContactName(activity.contactId)}
+                            {getContactName(activity.contact_id_c)}
                           </span>
                           <Badge variant="secondary" className="capitalize text-xs">
                             {activity.type}
                           </Badge>
                         </div>
-                        <p className="text-secondary-700 text-sm mb-1">
-                          {activity.description}
+<p className="text-secondary-700 text-sm mb-1">
+                          {activity.description_c}
                         </p>
                         <p className="text-xs text-secondary-500">
                           {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
@@ -221,8 +221,8 @@ const Dashboard = () => {
                   { stage: "proposal", label: "Proposal", icon: "FileText" },
                   { stage: "closed-won", label: "Closed Won", icon: "Trophy" }
                 ].map((item) => {
-                  const stageDeals = deals.filter(deal => deal.stage === item.stage);
-                  const stageValue = stageDeals.reduce((sum, deal) => sum + deal.value, 0);
+const stageDeals = deals.filter(deal => deal.stage_c === item.stage);
+                  const stageValue = stageDeals.reduce((sum, deal) => sum + deal.value_c, 0);
                   
                   return (
                     <div key={item.stage} className="flex items-center justify-between p-3 bg-secondary-50 rounded-lg">

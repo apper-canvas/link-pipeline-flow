@@ -58,11 +58,23 @@ const Pipeline = () => {
     setIsSubmitting(true);
     try {
       if (selectedDeal) {
-        const updatedDeal = await dealsService.update(selectedDeal.Id, dealData);
+const updatedDeal = await dealsService.update(selectedDeal.Id, {
+          contact_id_c: dealData.contact_id_c,
+          title_c: dealData.title_c,
+          value_c: dealData.value_c,
+          stage_c: dealData.stage_c,
+          expected_close_date_c: dealData.expected_close_date_c
+        });
         setDeals(prev => prev.map(d => d.Id === selectedDeal.Id ? updatedDeal : d));
         toast.success("Deal updated successfully!");
       } else {
-        const newDeal = await dealsService.create(dealData);
+const newDeal = await dealsService.create({
+          contact_id_c: dealData.contact_id_c,
+          title_c: dealData.title_c,
+          value_c: dealData.value_c,
+          stage_c: dealData.stage_c,
+          expected_close_date_c: dealData.expected_close_date_c
+        });
         setDeals(prev => [...prev, newDeal]);
         toast.success("Deal created successfully!");
       }
@@ -77,7 +89,7 @@ const Pipeline = () => {
 
   const handleMoveCard = async (dealId, newStage) => {
     try {
-      const updatedDeal = await dealsService.update(dealId, { stage: newStage });
+const updatedDeal = await dealsService.update(dealId, { stage_c: newStage });
       setDeals(prev => prev.map(d => d.Id === dealId ? updatedDeal : d));
       
       const stageLabels = {
@@ -130,8 +142,8 @@ const Pipeline = () => {
     );
   }
 
-  const activeDeals = deals.filter(deal => !["closed-won", "closed-lost"].includes(deal.stage));
-  const totalPipelineValue = activeDeals.reduce((sum, deal) => sum + deal.value, 0);
+const activeDeals = deals.filter(deal => !["closed-won", "closed-lost"].includes(deal.stage_c));
+  const totalPipelineValue = activeDeals.reduce((sum, deal) => sum + deal.value_c, 0);
 
   return (
     <div className="space-y-6">

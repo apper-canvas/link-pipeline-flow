@@ -58,9 +58,9 @@ const Contacts = () => {
     // Apply search filter
     if (searchTerm) {
       filtered = filtered.filter(contact => 
-        contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        contact.company.toLowerCase().includes(searchTerm.toLowerCase())
+contact.name_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.email_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        contact.company_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -69,21 +69,21 @@ const Contacts = () => {
       let aValue, bValue;
       
       switch (sortField) {
-        case "name":
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
+case "name":
+          aValue = a.name_c?.toLowerCase() || '';
+          bValue = b.name_c?.toLowerCase() || '';
           break;
         case "company":
-          aValue = a.company.toLowerCase();
-          bValue = b.company.toLowerCase();
+          aValue = a.company_c?.toLowerCase() || '';
+          bValue = b.company_c?.toLowerCase() || '';
           break;
         case "lastContactedAt":
-          aValue = new Date(a.lastContactedAt);
-          bValue = new Date(b.lastContactedAt);
+          aValue = new Date(a.last_contacted_at_c || 0);
+          bValue = new Date(b.last_contacted_at_c || 0);
           break;
         default:
-          aValue = a[sortField];
-          bValue = b[sortField];
+          aValue = a[sortField] || '';
+          bValue = b[sortField] || '';
       }
 
       if (sortDirection === "asc") {

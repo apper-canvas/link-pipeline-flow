@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { formatDistanceToNow, format } from "date-fns";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Badge from "@/components/atoms/Badge";
-import Modal from "@/components/atoms/Modal";
-import ActivityForm from "@/components/molecules/ActivityForm";
+import React, { useEffect, useState } from "react";
+import { format, formatDistanceToNow } from "date-fns";
 import { dealsService } from "@/services/api/dealsService";
 import { activitiesService } from "@/services/api/activitiesService";
-import Loading from "@/components/ui/Loading";
 import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import Modal from "@/components/atoms/Modal";
+import Loading from "@/components/ui/Loading";
+import ActivityForm from "@/components/molecules/ActivityForm";
 
 const ContactDetails = ({ contact, onEdit, onClose }) => {
   const [activeTab, setActiveTab] = useState("info");
@@ -23,7 +23,7 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
       try {
         const [dealsData, activitiesData] = await Promise.all([
           dealsService.getByContactId(contact.Id),
-          activitiesService.getByContactId(contact.Id)
+activitiesService.getByContactId(contact.Id)
         ]);
         setDeals(dealsData);
         setActivities(activitiesData);
@@ -41,7 +41,11 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
   const handleAddActivity = async (activityData) => {
     setIsSubmitting(true);
     try {
-      const newActivity = await activitiesService.create(activityData);
+const newActivity = await activitiesService.create({
+        contact_id_c: activityData.contact_id_c,
+        description_c: activityData.description_c,
+        type_c: activityData.type_c
+      });
       setActivities(prev => [newActivity, ...prev]);
       setShowActivityModal(false);
       toast.success("Activity added successfully!");
@@ -95,13 +99,13 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-4">
             <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center text-white font-bold text-xl">
-              {contact.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+{contact.name_c?.split(" ").map(n => n[0]).join("").slice(0, 2) || 'N/A'}
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-secondary-900">{contact.name}</h2>
-              <p className="text-secondary-600">{contact.company}</p>
+              <h2 className="text-2xl font-bold text-secondary-900">{contact.name_c || 'Unknown'}</h2>
+              <p className="text-secondary-600">{contact.company_c || 'No company'}</p>
               <p className="text-sm text-secondary-500">
-                Added {formatDistanceToNow(new Date(contact.createdAt), { addSuffix: true })}
+                Added {formatDistanceToNow(new Date(contact.CreatedOn), { addSuffix: true })}
               </p>
             </div>
           </div>
@@ -163,17 +167,17 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
                 <div className="space-y-3">
                   <div>
                     <label className="text-sm font-medium text-secondary-600">Email</label>
-                    <p className="text-secondary-900">{contact.email}</p>
+<p className="text-secondary-900">{contact.email_c || 'No email'}</p>
                   </div>
-                  {contact.phone && (
+{contact.phone_c && (
                     <div>
                       <label className="text-sm font-medium text-secondary-600">Phone</label>
-                      <p className="text-secondary-900">{contact.phone}</p>
+                      <p className="text-secondary-900">{contact.phone_c}</p>
                     </div>
-                  )}
+)}
                   <div>
                     <label className="text-sm font-medium text-secondary-600">Company</label>
-                    <p className="text-secondary-900">{contact.company}</p>
+                    <p className="text-secondary-900">{contact.company_c || 'No company'}</p>
                   </div>
                 </div>
               </div>
@@ -188,24 +192,24 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
                   <div>
                     <label className="text-sm font-medium text-secondary-600">Total Deal Value</label>
                     <p className="text-secondary-900">
-                      ${deals.reduce((sum, deal) => sum + deal.value, 0).toLocaleString()}
+${deals.reduce((sum, deal) => sum + deal.value_c, 0).toLocaleString()}
                     </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-secondary-600">Last Contacted</label>
-                    <p className="text-secondary-900">
-                      {formatDistanceToNow(new Date(contact.lastContactedAt), { addSuffix: true })}
+<p className="text-secondary-900">
+                      {formatDistanceToNow(new Date(contact.last_contacted_at_c), { addSuffix: true })}
                     </p>
                   </div>
                 </div>
               </div>
             </div>
             
-            {contact.notes && (
+{contact.notes_c && (
               <div>
                 <h3 className="text-lg font-semibold text-secondary-900 mb-4">Notes</h3>
                 <div className="bg-secondary-50 rounded-lg p-4">
-                  <p className="text-secondary-700 whitespace-pre-wrap">{contact.notes}</p>
+                  <p className="text-secondary-700 whitespace-pre-wrap">{contact.notes_c}</p>
                 </div>
               </div>
             )}
@@ -216,30 +220,30 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
           <div className="space-y-4">
             {deals.length > 0 ? (
               deals.map((deal) => (
-                <div key={deal.Id} className="bg-secondary-50 rounded-lg p-4">
+<div key={deal.Id} className="bg-secondary-50 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-secondary-900">{deal.title}</h4>
-                    <Badge variant={getStageVariant(deal.stage)}>
-                      {deal.stage.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}
+                    <h4 className="font-semibold text-secondary-900">{deal.title_c}</h4>
+                    <Badge variant={getStageVariant(deal.stage_c)}>
+                      {deal.stage_c?.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}
                     </Badge>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                     <div>
                       <span className="text-secondary-600">Value:</span>
                       <span className="ml-2 font-medium text-secondary-900">
-                        ${deal.value.toLocaleString()}
+                        ${deal.value_c?.toLocaleString() || '0'}
                       </span>
                     </div>
                     <div>
                       <span className="text-secondary-600">Expected Close:</span>
                       <span className="ml-2 text-secondary-900">
-                        {format(new Date(deal.expectedCloseDate), "MMM dd, yyyy")}
+                        {format(new Date(deal.expected_close_date_c), "MMM dd, yyyy")}
                       </span>
                     </div>
                     <div>
                       <span className="text-secondary-600">In Stage:</span>
                       <span className="ml-2 text-secondary-900">
-                        {formatDistanceToNow(new Date(deal.movedToStageAt))}
+                        {formatDistanceToNow(new Date(deal.moved_to_stage_at_c))}
                       </span>
                     </div>
                   </div>
@@ -261,10 +265,10 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
             {activities.length > 0 ? (
               <div className="space-y-4">
                 {activities.map((activity) => (
-                  <div key={activity.Id} className="flex items-start space-x-4">
+<div key={activity.Id} className="flex items-start space-x-4">
                     <div className="w-10 h-10 bg-secondary-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <ApperIcon 
-                        name={getActivityIcon(activity.type)} 
+                        name={getActivityIcon(activity.type_c)} 
                         size={18} 
                         className="text-secondary-600" 
                       />
@@ -272,17 +276,18 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
                         <Badge variant="secondary" className="capitalize">
-                          {activity.type}
+                          {activity.type_c}
                         </Badge>
                         <span className="text-sm text-secondary-500">
-                          {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
+                          {formatDistanceToNow(new Date(activity.timestamp_c), { addSuffix: true })}
+<span className="text-sm text-secondary-500">
+                          {formatDistanceToNow(new Date(activity.timestamp_c), { addSuffix: true })}
                         </span>
                       </div>
-                      <p className="text-secondary-900">{activity.description}</p>
+                      <p className="text-secondary-700 text-sm">
+                        {activity.description_c}
+                      </p>
                     </div>
-                  </div>
-                ))}
-              </div>
             ) : (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -311,7 +316,7 @@ const ContactDetails = ({ contact, onEdit, onClose }) => {
         size="default"
       >
         <ActivityForm
-          contactId={contact.Id}
+contactId={contact.Id}
           onSubmit={handleAddActivity}
           onCancel={() => setShowActivityModal(false)}
           isSubmitting={isSubmitting}

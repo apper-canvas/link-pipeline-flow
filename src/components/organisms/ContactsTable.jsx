@@ -17,8 +17,8 @@ const ContactsTable = ({
 }) => {
   const [hoveredRow, setHoveredRow] = useState(null);
 
-  const getContactDeals = (contactId) => {
-    return deals.filter(deal => deal.contactId === contactId);
+const getContactDeals = (contactId) => {
+    return deals.filter(deal => deal.contact_id_c === contactId);
   };
 
   const getStageVariant = (stage) => {
@@ -89,9 +89,9 @@ const ContactsTable = ({
       {/* Table Body */}
       <div className="divide-y divide-secondary-200">
         {contacts.map((contact) => {
-          const contactDeals = getContactDeals(contact.Id);
+const contactDeals = getContactDeals(contact.Id);
           const activeDeals = contactDeals.filter(deal => 
-            !["closed-won", "closed-lost"].includes(deal.stage)
+            !["closed-won", "closed-lost"].includes(deal.stage_c)
           );
           
           return (
@@ -109,14 +109,14 @@ const ContactsTable = ({
               <div className="col-span-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                    {contact.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+{contact.name_c?.split(" ").map(n => n[0]).join("").slice(0, 2) || 'N/A'}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-secondary-900 truncate">
-                      {contact.name}
+                      {contact.name_c || 'Unknown'}
                     </p>
                     <p className="text-sm text-secondary-600 truncate">
-                      {contact.email}
+                      {contact.email_c || 'No email'}
                     </p>
                   </div>
                 </div>
@@ -125,9 +125,9 @@ const ContactsTable = ({
               {/* Company */}
               <div className="col-span-2 hidden sm:flex items-center">
                 <div>
-                  <p className="font-medium text-secondary-900">{contact.company}</p>
-                  {contact.phone && (
-                    <p className="text-sm text-secondary-600">{contact.phone}</p>
+<p className="font-medium text-secondary-900">{contact.company_c || 'No company'}</p>
+                  {contact.phone_c && (
+                    <p className="text-sm text-secondary-600">{contact.phone_c}</p>
                   )}
                 </div>
               </div>
@@ -139,11 +139,11 @@ const ContactsTable = ({
                     <div className="flex flex-wrap gap-1">
                       {activeDeals.slice(0, 2).map((deal) => (
                         <Badge
-                          key={deal.Id}
-                          variant={getStageVariant(deal.stage)}
+key={deal.Id}
+                          variant={getStageVariant(deal.stage_c)}
                           className="text-xs"
                         >
-                          ${deal.value.toLocaleString()}
+                          ${deal.value_c?.toLocaleString() || '0'}
                         </Badge>
                       ))}
                       {activeDeals.length > 2 && (
@@ -161,7 +161,7 @@ const ContactsTable = ({
               {/* Last Contact */}
               <div className="col-span-2 hidden lg:flex items-center">
                 <span className="text-sm text-secondary-600">
-                  {formatDate(contact.lastContactedAt)}
+{formatDate(contact.last_contacted_at_c)}
                 </span>
               </div>
 

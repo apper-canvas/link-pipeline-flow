@@ -4,12 +4,12 @@ import Input from "@/components/atoms/Input";
 import { contactsService } from "@/services/api/contactsService";
 
 const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
-  const [formData, setFormData] = useState({
-    title: deal?.title || "",
-    contactId: deal?.contactId || "",
-    value: deal?.value || "",
-    stage: deal?.stage || "lead",
-    expectedCloseDate: deal?.expectedCloseDate || ""
+const [formData, setFormData] = useState({
+    title_c: deal?.title_c || "",
+    contact_id_c: deal?.contact_id_c || "",
+    value_c: deal?.value_c || "",
+    stage_c: deal?.stage_c || "lead",
+    expected_close_date_c: deal?.expected_close_date_c || ""
   });
 
   const [errors, setErrors] = useState({});
@@ -75,9 +75,11 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
     e.preventDefault();
     if (validateForm()) {
       onSubmit({
-        ...formData,
-        contactId: parseInt(formData.contactId),
-        value: parseFloat(formData.value)
+contact_id_c: parseInt(formData.contact_id_c),
+        title_c: formData.title_c,
+        value_c: parseFloat(formData.value_c),
+        stage_c: formData.stage_c,
+        expected_close_date_c: formData.expected_close_date_c
       });
     }
   };
@@ -89,8 +91,8 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
           Deal Title *
         </label>
         <Input
-          name="title"
-          value={formData.title}
+name="title_c"
+          value={formData.title_c}
           onChange={handleChange}
           placeholder="Enter deal title"
         />
@@ -105,7 +107,8 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
         </label>
         <select
           name="contactId"
-          value={formData.contactId}
+name="contact_id_c"
+          value={formData.contact_id_c}
           onChange={handleChange}
           className="flex h-10 w-full rounded-md border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={loadingContacts}
@@ -113,9 +116,9 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
           <option value="">
             {loadingContacts ? "Loading contacts..." : "Select a contact"}
           </option>
-          {contacts.map(contact => (
+{contacts.map(contact => (
             <option key={contact.Id} value={contact.Id}>
-              {contact.name} - {contact.company}
+              {contact.name_c} - {contact.company_c}
             </option>
           ))}
         </select>
@@ -134,7 +137,8 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
             type="number"
             min="0"
             step="0.01"
-            value={formData.value}
+name="value_c"
+            value={formData.value_c}
             onChange={handleChange}
             placeholder="0.00"
           />
@@ -148,8 +152,8 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
             Stage
           </label>
           <select
-            name="stage"
-            value={formData.stage}
+name="stage_c"
+            value={formData.stage_c}
             onChange={handleChange}
             className="flex h-10 w-full rounded-md border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
           >
@@ -169,7 +173,8 @@ const DealForm = ({ deal, onSubmit, onCancel, isSubmitting }) => {
         <Input
           name="expectedCloseDate"
           type="date"
-          value={formData.expectedCloseDate}
+name="expected_close_date_c"
+          value={formData.expected_close_date_c}
           onChange={handleChange}
         />
         {errors.expectedCloseDate && (

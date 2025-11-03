@@ -47,9 +47,9 @@ const Header = () => {
             })}
           </nav>
 
-          {/* Quick Actions */}
+{/* Quick Actions */}
           <div className="flex items-center space-x-3">
-            
+            <LogoutButton />
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -79,10 +79,9 @@ const Header = () => {
                   >
                     <ApperIcon name={item.icon} size={16} />
                     <span>{item.label}</span>
-                  </Link>
+</Link>
                 );
               })}
-              
             </nav>
           </div>
         )}

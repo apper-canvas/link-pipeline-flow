@@ -4,8 +4,8 @@ import Input from "@/components/atoms/Input";
 
 const ActivityForm = ({ contactId, onSubmit, onCancel, isSubmitting }) => {
   const [formData, setFormData] = useState({
-    type: "call",
-    description: ""
+type_c: "call",
+    description_c: ""
   });
 
   const [errors, setErrors] = useState({});
@@ -42,7 +42,9 @@ const ActivityForm = ({ contactId, onSubmit, onCancel, isSubmitting }) => {
     if (validateForm()) {
       onSubmit({
         ...formData,
-        contactId: contactId
+contact_id_c: contactId,
+        type_c: formData.type_c,
+        description_c: formData.description_c
       });
     }
   };
@@ -55,7 +57,8 @@ const ActivityForm = ({ contactId, onSubmit, onCancel, isSubmitting }) => {
         </label>
         <select
           name="type"
-          value={formData.type}
+name="type_c"
+          value={formData.type_c}
           onChange={handleChange}
           className="flex h-10 w-full rounded-md border border-secondary-300 bg-white px-3 py-2 text-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
         >
@@ -72,8 +75,8 @@ const ActivityForm = ({ contactId, onSubmit, onCancel, isSubmitting }) => {
           Description *
         </label>
         <textarea
-          name="description"
-          value={formData.description}
+name="description_c"
+          value={formData.description_c}
           onChange={handleChange}
           rows={4}
           placeholder="Describe what happened in this interaction..."

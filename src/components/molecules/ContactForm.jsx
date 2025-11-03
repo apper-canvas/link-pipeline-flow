@@ -4,11 +4,11 @@ import Input from "@/components/atoms/Input";
 
 const ContactForm = ({ contact, onSubmit, onCancel, isSubmitting }) => {
   const [formData, setFormData] = useState({
-    name: contact?.name || "",
-    email: contact?.email || "",
-    phone: contact?.phone || "",
-    company: contact?.company || "",
-    notes: contact?.notes || ""
+name_c: contact?.name_c || "",
+    email_c: contact?.email_c || "",
+    phone_c: contact?.phone_c || "",
+    company_c: contact?.company_c || "",
+    notes_c: contact?.notes_c || ""
   });
 
   const [errors, setErrors] = useState({});
@@ -60,7 +60,8 @@ const ContactForm = ({ contact, onSubmit, onCancel, isSubmitting }) => {
           </label>
           <Input
             name="name"
-            value={formData.name}
+name="name_c"
+            value={formData.name_c}
             onChange={handleChange}
             placeholder="Enter contact name"
           />
@@ -75,8 +76,9 @@ const ContactForm = ({ contact, onSubmit, onCancel, isSubmitting }) => {
           </label>
           <Input
             name="email"
+name="email_c"
             type="email"
-            value={formData.email}
+            value={formData.email_c}
             onChange={handleChange}
             placeholder="Enter email address"
           />
@@ -92,8 +94,8 @@ const ContactForm = ({ contact, onSubmit, onCancel, isSubmitting }) => {
             Phone
           </label>
           <Input
-            name="phone"
-            value={formData.phone}
+name="phone_c"
+            value={formData.phone_c}
             onChange={handleChange}
             placeholder="Enter phone number"
           />
@@ -104,8 +106,8 @@ const ContactForm = ({ contact, onSubmit, onCancel, isSubmitting }) => {
             Company *
           </label>
           <Input
-            name="company"
-            value={formData.company}
+name="company_c"
+            value={formData.company_c}
             onChange={handleChange}
             placeholder="Enter company name"
           />
@@ -121,7 +123,8 @@ const ContactForm = ({ contact, onSubmit, onCancel, isSubmitting }) => {
         </label>
         <textarea
           name="notes"
-          value={formData.notes}
+name="notes_c"
+          value={formData.notes_c}
           onChange={handleChange}
           rows={4}
           placeholder="Add any relevant notes about this contact"

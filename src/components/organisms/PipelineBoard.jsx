@@ -48,21 +48,21 @@ const PipelineBoard = ({ deals, contacts, onMoveCard, onEditDeal }) => {
 
   // Calculate stage statistics
   const stageStats = stages.map(stage => {
-    const stageDeals = deals.filter(deal => deal.stage === stage.id);
+const stageDeals = deals.filter(deal => deal.stage_c === stage.id);
     return {
       ...stage,
       count: stageDeals.length,
-      value: stageDeals.reduce((sum, deal) => sum + deal.value, 0)
+      value: stageDeals.reduce((sum, deal) => sum + deal.value_c, 0)
     };
   });
 
   const getContactName = (contactId) => {
-    const contact = contacts.find(c => c.Id === contactId);
-    return contact?.name || "Unknown Contact";
+const contact = contacts.find(c => c.Id === contactId);
+    return contact?.name_c || "Unknown Contact";
   };
 
-  const getDaysInStage = (movedToStageAt) => {
-    return differenceInDays(new Date(), new Date(movedToStageAt));
+const getDaysInStage = (movedToStageAt) => {
+    return differenceInDays(new Date(), new Date(movedToStageAt || new Date()));
   };
 
   const handleDragStart = (e, deal) => {
@@ -99,8 +99,7 @@ const PipelineBoard = ({ deals, contacts, onMoveCard, onEditDeal }) => {
     <div className="h-full">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full">
         {stageStats.map((stage) => {
-          const stageDeals = deals.filter(deal => deal.stage === stage.id);
-          
+const stageDeals = deals.filter(deal => deal.stage_c === stage.id);
           return (
             <div
               key={stage.id}
@@ -126,10 +125,9 @@ const PipelineBoard = ({ deals, contacts, onMoveCard, onEditDeal }) => {
               {/* Deal Cards */}
               <div className="p-4 space-y-3 min-h-[400px] custom-scrollbar overflow-y-auto">
                 <AnimatePresence>
-                  {stageDeals.map((deal) => {
-                    const daysInStage = getDaysInStage(deal.movedToStageAt);
+{stageDeals.map((deal) => {
+                    const daysInStage = getDaysInStage(deal.moved_to_stage_at_c);
                     const isStagnant = daysInStage > 30;
-                    
                     return (
                       <motion.div
                         key={deal.Id}
@@ -154,7 +152,7 @@ const PipelineBoard = ({ deals, contacts, onMoveCard, onEditDeal }) => {
                               {/* Deal Title */}
                               <div className="flex items-start justify-between">
                                 <h4 className="font-medium text-secondary-900 text-sm leading-tight">
-                                  {deal.title}
+{deal.title_c}
                                 </h4>
                                 <Button
                                   variant="ghost"
@@ -170,7 +168,7 @@ const PipelineBoard = ({ deals, contacts, onMoveCard, onEditDeal }) => {
                               <div className="flex items-center space-x-2">
                                 <ApperIcon name="User" size={14} className="text-secondary-400" />
                                 <span className="text-sm text-secondary-600">
-                                  {getContactName(deal.contactId)}
+{getContactName(deal.contact_id_c)}
                                 </span>
                               </div>
 
@@ -178,8 +176,8 @@ const PipelineBoard = ({ deals, contacts, onMoveCard, onEditDeal }) => {
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
                                   <ApperIcon name="DollarSign" size={14} className="text-accent-600" />
-                                  <span className="font-semibold text-secondary-900">
-                                    ${deal.value.toLocaleString()}
+<span className="font-semibold text-secondary-900">
+                                    ${deal.value_c?.toLocaleString() || '0'}
                                   </span>
                                 </div>
                               </div>
@@ -208,7 +206,7 @@ const PipelineBoard = ({ deals, contacts, onMoveCard, onEditDeal }) => {
                               <div className="flex items-center space-x-2 text-xs text-secondary-500">
                                 <ApperIcon name="Calendar" size={12} />
                                 <span>
-                                  Expected: {formatDistanceToNow(new Date(deal.expectedCloseDate), { addSuffix: true })}
+Expected: {formatDistanceToNow(new Date(deal.expected_close_date_c), { addSuffix: true })}
                                 </span>
                               </div>
                             </div>
