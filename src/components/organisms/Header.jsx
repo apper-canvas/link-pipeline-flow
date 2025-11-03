@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
+import LogoutButton from "@/components/molecules/LogoutButton";
 
 const Header = () => {
   const location = useLocation();
